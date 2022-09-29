@@ -2,20 +2,19 @@
 require_once __DIR__ . "/../Entity/TodoList.php";
 require_once __DIR__ . "/../Repository/TodolistRepository.php";
 require_once __DIR__ . "/../Service/TodolistService.php";
+require_once __DIR__. "/../Config/Database.php";
 
 use \Entity\TodoList;
 use Service\TodolistServiceImpl;
 use Repository\TodolistRepositoryImpl;
 
 function testShowTodolist():void{
-
-    $todolisRepository = new TodolistRepositoryImpl();
-    $todolisRepository->todolist[1] = new TodoList("Belajar PHP Dasar");
-    $todolisRepository->todolist[2] = new TodoList("Belajar OOP");
-    $todolisRepository->todolist[3] = new TodoList("Belajar Database");
-
-
+    $connection = \Config\Database::getConnection();
+    $todolisRepository = new TodolistRepositoryImpl($connection);
     $todolisService = new TodolistServiceImpl($todolisRepository);
+    $todolisService->addTodolist("Belajar PHP Dasar");
+    $todolisService->addTodolist("Belajar PHP OOP");
+    $todolisService->addTodolist("Belajar PHP Database");
 
     $todolisService->showTodolist();
 }
@@ -24,33 +23,31 @@ function testShowTodolist():void{
 
 function testAddTodolist():void{
 
-    $todolisRepository = new TodolistRepositoryImpl();
+    $connection = \Config\Database::getConnection();
+    $todolisRepository = new TodolistRepositoryImpl($connection);
 
     $todolisService = new TodolistServiceImpl($todolisRepository);
     $todolisService->addTodolist("Belajar PHP Dasar");
     $todolisService->addTodolist("Belajar PHP OOP");
     $todolisService->addTodolist("Belajar PHP Database");
 
-    $todolisService->showTodolist();
+//    $todolisService->showTodolist();
 }
 
 
 function testRemoveTodolist():void{
 
-    $todolisRepository = new TodolistRepositoryImpl();
+    $connection = \Config\Database::getConnection();
+
+    $todolisRepository = new TodolistRepositoryImpl($connection);
 
     $todolisService = new TodolistServiceImpl($todolisRepository);
-    $todolisService->addTodolist("Belajar PHP Dasar");
-    $todolisService->addTodolist("Belajar PHP OOP");
-    $todolisService->addTodolist("Belajar PHP Database");
 
-    $todolisService->removeTodolist(1);
-    $todolisService->showTodolist();
-    $todolisService->removeTodolist(3);
-    $todolisService->showTodolist();
-    $todolisService->removeTodolist(2);
-    $todolisService->showTodolist();
+    echo $todolisService->removeTodolist(5).PHP_EOL;
+    echo $todolisService->removeTodolist(4).PHP_EOL;
+    echo $todolisService->removeTodolist(3).PHP_EOL;
+    echo $todolisService->removeTodolist(2).PHP_EOL;
+    echo $todolisService->removeTodolist(1).PHP_EOL;
 }
 
-testRemoveTodolist();
-
+testShowTodolist();
